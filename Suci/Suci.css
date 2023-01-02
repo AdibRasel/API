@@ -1,0 +1,28 @@
+.Suci_Title{
+
+}
+
+.Suci_Title li{
+    list-style: disc;
+}
+
+.Suci_Title li a{
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #001c43;
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0px 0px 5px 3px #706d6c;
+    transition: 700ms;
+}
+.Suci_Title li a:hover{
+    box-shadow: 0px 0px 5px 3px #001c43;
+    background-color: white;
+    color: #001c43;
+
+}
