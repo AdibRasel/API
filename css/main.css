@@ -1,4 +1,6 @@
-
+.img{
+    max-width: 100%;
+}
 
 .main_section{
     background: url(../image/bg_1.gif);
