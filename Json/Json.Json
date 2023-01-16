@@ -1,0 +1,13 @@
+{
+    "Title": "Soft Soze",
+    "Author": "Rasel Hossain",
+    "Address": "Shahapur School Market 2nd Floor, Shahapur, Chatkhil, Noakhali",
+    "Mobile":["01934544352", "01612981858"],
+    "Course": {
+        "Office_Application" : ["Maicrosoft Word", "Accel", "Power Poind", "Access"],
+        "Grapich_Design": ["Adobe Photoshop", "Adobe Illustator"],
+        "Web_Development": ["html", "css", "jsvscript", "bootstrap", "react js", "node js", "express js", "mongo db"]
+    },
+    "Number": 10,
+    "Number2": [20, 30, 40, 50]
+}
