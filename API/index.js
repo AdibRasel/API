@@ -1,11 +1,7 @@
-import express from "express"
+const App = require("./App.js");
 
-const app = express();
-
-
-app.listen(2000, ()=>{
-    console.log("server run success porth https://localhost://2000")
+App.listen(5000, ()=>{
+        console.log("Server Run Success Port Address : http://localhost:5000/")
 })
 
-
-
+// class 109 
