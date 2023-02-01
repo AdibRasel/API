@@ -1,3 +1,16 @@
 .img_center{
     text-align: center;
 }
+.File_Code{
+    background-color: black;
+    color: red;
+    border-radius: 20px;
+}
+.File_Code pre{
+    color:red
+
+}
+.File_Code pre code{
+    color:red
+}
+

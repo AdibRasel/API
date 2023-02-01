@@ -171,7 +171,36 @@
               
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      <p> কন্ট্রোলারের মধ্যে সকল ফাইলকে কনট্রল করবে, রাউটারের ইন্ড পয়েন্ট এইখানে এসে সেস হবে, এখান থেকে দেখিয়ে দেওয়া হবে ডাটা কোন ভাবে সেভ হবে। </p>
+                      <hr>
+                      <img src="./controller.png" alt="">
+                      <hr>
+                      <p>কোড</p>
+
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const ProfileModel = require("../Models/ProfileModel")
+
+  exports.CreateProfile=(req, res)=>{
+      
+      let RequestBody = req.body;
+  
+      ProfileModel.create(RequestBody,(error, Data)=>{
+          if(error){
+              res.status(400).json({status:"Data Insert Fail From ProfileModel Line:9", data:error,})
+          }else{
+              res.status(200).json({status:"Data insert Success or Data save success", data:Data,})
+          }
+      })
+  
+  }
+</code>
+                        </pre>
+                     </div>
+                      
+
+
                     </div>
                   </div>
                 </div>
@@ -205,7 +234,42 @@
                   </div>
                   <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      <p>ডাটা কোন আকারে সেভ হবে, কি কি ডাটা সেভ হবে, কোথায় সেভ হবে সেই সব কিছু ডাটা মডেলে থাকে।</p>
+                      <hr>
+                      <img src="./DataModel.png" alt="">
+                      <hr>
+                      <p>কোড</p>
+                      <hr>
+
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const Mongose = require("mongoose");
+
+  const DataSchema =  Mongose.Schema(
+      {
+          FirstName:{type:String},
+          LastName:{type:String},
+          EmailAddress:{type:String},
+          MobileNumber:{type:String},
+          City:{type:String},
+          UserName:{type:String},
+          Password:{type:String},
+      },{
+          versionKey:false
+      }
+  );
+  
+  const ProfileModel =  Mongose.model("Profile", DataSchema);
+  
+  
+  module.exports = ProfileModel;
+</code>
+                        </pre>
+                        </div>
+
+
+
                     </div>
                   </div>
                 </div>
@@ -222,7 +286,32 @@
                   </div>
                   <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      <p>Router রাউটার পোল্ডারে <b>router.js</b>, <b>api.js</b> ফাইলগুলো থাকে, যেগুলো ভিবিন্ন রাউটারে লিং link তৈরি করে বা api তৈরি করে।</p>
+                      <img src="./router_code_file.png" alt="">
+                      <hr>
+                      <p>কোড</p>
+                      <hr>
+
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const ProfileController = require("../Controller/ProfileController.js")
+
+  const Express = require("express");
+  const Router =  Express.Router()
+  
+  
+  Router.post("/ProfileCreate", ProfileController.CreateProfile)
+  
+  
+  
+  module.exports = Router;
+</code>
+                        </pre>
+                      </div>
+
+
+
                     </div>
                   </div>
                 </div>
@@ -239,7 +328,107 @@
                   </div>
                   <div id="collapseFive" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+                      <p>App ফাইলে সকল গুরুত্বপূর্ণ কাজ করা হয়, যা নিম্নে ইমেজ লক্ষ করলে বুজা যাবে।  </p>
+
+
+                      <img src="./app.js1_configuration.png" alt="">
+                      <img src="./app.js2_configuration.png" alt="">
+                      <img src="./app.js3_configuration.png" alt="">
+                      <hr>
+                      <img src="./app.js1.png" alt="">
+                      <img src="./app.js2.png" alt="">
+                      <img src="./app.js3.png" alt="">
+                      <hr>
+                      <p>কোড</p>
+                      <hr>
+                      <div class="File_Code" id="code_copy">
+
+                        <button onclick="CodeCopy(text)"  id="code_copy_button_index">Copy</button>
+
+                        <pre>
+<code>
+  //Basic Lib Import
+  const express = require("express");
+  const Router = require("./Src/Routers/Api.js");
+  const App = new express();
+  const BodyParser = require("body-parser");
+  
+  
+  // Security Middleware Lib Import
+  const RateLimiter = require("express-rate-limit");
+  const Helmet = require("helmet")
+  const MongoSanitize = require("express-mongo-sanitize");
+  const Xss = require("xss-clean");
+  const Hpp = require("hpp");
+  const Cors = require("cors");
+  
+  
+  // Database Configuration
+  const Mongose = require("mongoose");
+  
+  
+  // Security Middleware Implement 
+  App.use(Cors())
+  App.use(Helmet())
+  App.use(MongoSanitize())
+  App.use(Xss())
+  App.use(Hpp())
+  
+  
+  // Body Parser Implement 
+  App.use(BodyParser.json())
+  
+  
+  // Request Rate Limite 
+  const Limiter =  RateLimiter(
+          {
+              windowMs: 15 * 60 * 1000, // 15 Minute
+              max: 3000 // 3000 request
+          }
+      )
+  App.use(Limiter)
+  
+  
+  
+  // Mongo DB Database Connection 
+  let Url = "mongodb://127.0.0.1:27017/ToDo"  // ToDo হচ্ছে মঙ্গোডিভি ডাটাবেসের নাম, যে আগেই তৈরি করে নিতে হবে। 
+  // let OPTION = {username:"", password:""}
+  // Mongose.connect(Url, OPTION(error)=>{
+  //     console.log("Mongo DB Datbase Connection Success");
+  //     console.log(error)
+  // })
+  Mongose.connect(Url,(error)=>{
+      console.log("Mongo DB Datbase Connection Success");
+      console.log(error)
+  })
+  
+  
+  // API Create, Or Routing Implement
+  App.use("/api/v1", Router)
+  
+  
+  // Undefine Route Or Undefine API 
+  App.use("*",(req, res)=>{
+      res.status(404)
+      res.json(
+          {
+              Status: "Not Found",
+              Data:"Undefine Route Or Rong API"
+          }
+      )
+  })
+  
+  
+  
+  module.exports = App;
+</code>
+                        </pre>
+                      </div>
+
+
+
+
                     </div>
                   </div>
                 </div>
@@ -256,7 +445,27 @@
                   </div>
                   <div id="collapseSix" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      Index.js ফাইলে যাস্ট সার্ভার রান হবে। আর সকল কাজ App.js এ করা হয়েছে, সে জন্য App.js ফাইলকে রিকোয়ার করা হয়েছে।  <hr>
+                      <img src="./index.js.png" alt=""> <hr>
+                      কোড <br>
+                      <img src="./index.js_code.png" alt="">
+                      <hr>
+
+                      <div class="File_Code">
+
+
+                        <pre>
+<code>
+  const App = require("./App.js");
+
+  App.listen(5000, ()=>{
+          console.log("Server Run Success Port Address : http://localhost:5000/")
+  })
+</code>
+                        </pre>
+                        </div>
+
+
                     </div>
                   </div>
                 </div>
@@ -420,7 +629,9 @@
 
 
 
-    <script src="./javascript.js"></script>
+    <!-- <script src="./AppCode.js"></script> -->
+    <!-- index code copy js file  -->
+    <script src="./CodeCopy.js"></script>
     <!-- Main Js -->
     <script src="js/main.js"></script>
     <!-- Bootstrap JS -->
