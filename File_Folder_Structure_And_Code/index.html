@@ -147,14 +147,19 @@
               </b></p>
 
               <img src="./Code+Structure.png" alt="">
-              <!-- class 105 -->
               <hr>
               <div class="img_center">
                 <img src="./File_Folder_Structure5.PNG" alt="">
                 <img src="./File_Folder_Structure6.PNG" alt="">
               </div>
 
-
+              <div class="Project">
+                <h3>
+                  নিম্নে একটি প্রোজেক্টের কোড দেওয়া হলো, যেগুলো দিয়ে কমপ্লিট একটি প্রজেক্ট করা যাবে। <br>
+                  প্রজেক্ট টিতে প্রোপাইল তৈরি করা যায়, সেই প্রোফাইলে লগিন করা যায়, প্রোফাইল আপডেট করা যায়, সেই প্রোফাইল দিয়ে একটি টুডু তৈরি করা যায়, সেই টুডু আপডেট করা যায়, সেই টুডু কে ভিবিন্ন ভাবে খোজা যায় এবং এই টুডু কে ডিলেট করা যায়, নিম্নে ডোকুমেন্টেশনের লিং দেওয়া হলো <br>
+                  <a href="https://documenter.getpostman.com/view/22317575/2s935oKibC" target="_blank">Documention দেখতে ক্লিক করুন</a> 
+                </h3>
+              </div>
 
 
               <div class="accordion" id="accordionExample">
@@ -175,29 +180,296 @@
                       <hr>
                       <img src="./controller.png" alt="">
                       <hr>
-                      <p>কোড</p>
+                      <p>লগিন করার সময় একটা টোকেন ক্রিয়েট করবে, নিম্নে টোকেন ক্রিয়েট করার কোড দেওয়া হলো।</p>
+                      <img src="./Token_Create.png" alt="">
+
+                      <p>কোড Profile Control</p>
 
                       <div class="File_Code" id="code_copy">
                         <pre>
 <code>
   const ProfileModel = require("../Models/ProfileModel")
-
+  const Jwt = require("jsonwebtoken")
+  
+  
+  // Create Profile
   exports.CreateProfile=(req, res)=>{
       
       let RequestBody = req.body;
   
       ProfileModel.create(RequestBody,(error, Data)=>{
           if(error){
-              res.status(400).json({status:"Data Insert Fail From ProfileModel Line:9", data:error,})
+              res.status(400).json({status:"Data Insert Fail From ProfileModel", data:error,})
           }else{
               res.status(200).json({status:"Data insert Success or Data save success", data:Data,})
           }
       })
   
   }
+  
+  
+  // User Login 
+  exports.UserLogin=(req, res)=>{
+      
+      let RequestBody = req.body;
+      let UserNameFind = RequestBody["UserName"];
+      let PasswordFind = RequestBody["Password"];
+  
+      ProfileModel.find({UserName: UserNameFind,},(err, data)=>{
+  
+              if(data.length > 0){
+                  // Create Auth Token // authontication token // টোকেন তৈরি করা হয়েছে
+                  let Paylod = {
+                      exp: Math.floor(Date.now() / 100) + (24 * 60 * 60), //২৪ ঘন্টা এই টোকেনের মেয়াদ থাকবে
+                      data: data
+                  }
+                  let token = Jwt.sign(Paylod, "123456789") // ১২৩৪৫৬৭৮৯ হচ্ছে সিক্রেট কি
+                  res.status(200).json({login:"Login Success",toekn:token, Data:data, data: data})
+              }
+  
+              else{
+                  res.status(401).json({status:"401 unathorize, Login Fail, Please Type Sure Name and Password"})
+              }
+          })
+  
+  
+  
+  
+  }
+  
+  
+  //Select Profile 
+  exports.SelectProfile=(req, res)=>{
+      
+      let UserName = req.headers['UserName']
+  
+      ProfileModel.find({UserName:UserName},function(error, Data){
+          if(error){
+              res.status(400).json({status:"Select Profile Fail, an sure UserName", data:error})
+          }
+          else{
+              res.status(200).json({status:"Select Profile success, see profile data", data:Data})
+          }
+      })
+  
+  }
+  
+  
+  
+  
+  
+  //Update Profile 
+  exports.UpdateProfile=(req, res)=>{
+      
+      let UserName = req.headers['UserName']
+      let RequestBody = req.body;
+  
+      ProfileModel.updateOne({UserName:UserName},{$set:RequestBody}, {upsert:true},(error,data)=>{
+  
+          if(error){
+              res.status(400).json({status:"Update Profile Fail", data:error})
+          }
+          else{
+              res.status(200).json({status:"Update Profile success, see profile data", data:data})
+          }
+  
+  
+      })
+  
+  }  
 </code>
                         </pre>
-                     </div>
+                      </div>
+                      <p>কোড ToDo Control</p>
+
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const ToDoListModel = require("../Models/ToDoListModel")
+  const Jwt = require("jsonwebtoken")
+  
+  
+  // Create Profile
+  exports.ToDoListModel=(req, res)=>{
+      
+      let RequestBody = req.body;
+  
+      let UserName = req.headers["UserName"];
+      let ToDoSubject = RequestBody["ToDoSubject"];
+      let ToDoDescription = RequestBody["ToDoDescription"];
+      let ToDoStatus = "New";
+      let ToDoCreateDate = Date.now();
+      let ToDoUpdateDate = Date.now();
+  
+      let PostBody = {
+          UserName: UserName,
+          ToDoSubject: ToDoSubject,
+          ToDoDescription: ToDoDescription,
+          ToDoStatus: ToDoStatus,
+          ToDoCreateDate: ToDoCreateDate,
+          ToDoUpdateDate: ToDoUpdateDate
+      }
+  
+      ToDoListModel.create(PostBody,(error, Data)=>{
+          if(error){
+              res.status(400).json({status:"ToDo List Create Fail From ToDo List Model", data:error,})
+          }else{
+              res.status(200).json({status:"ToDo List insert Success or ToDo List save success", data:Data,})
+          }
+      })
+  
+  }
+  
+  
+  
+  
+  
+  //Select ToDo 
+  exports.SelectToDo=(req, res)=>{
+      
+      let UserName = req.headers['UserName']
+  
+      ToDoListModel.find({UserName:UserName},function(error, Data){
+          if(error){
+              res.status(400).json({status:"Select ToDo Fail, an sure UserName", data:error})
+          }
+          else{
+              res.status(200).json({status:"Select ToDo success, see profile data", data:Data})
+          }
+      })
+  
+  }
+  
+  
+  
+  
+  
+  //Update ToDo 
+  exports.UpdateToDo=(req, res)=>{
+      
+      let ToDoSubject = req.body["ToDoSubject"]
+      let ToDoDescription = req.body["ToDoDescription"]
+      let _id = req.body["_id"]
+  
+      let ToDoUpdateDate = Date.now();
+  
+      let PostBody = {
+          ToDoSubject:ToDoSubject,
+          ToDoDescription: ToDoDescription,
+          ToDoUpdateDate: ToDoUpdateDate
+      }
+      
+      ToDoListModel.updateOne({_id:_id}, {$set:PostBody}, {upsert:true}, (error, data)=>{
+          if(error){
+              res.status(400).json({status:"Update ToDo Fail", data:error})
+          }
+          else{
+              res.status(200).json({status:"Update ToDo success, see profile data", data:data})
+          }
+      })
+  
+  
+  }
+  
+  
+  
+  
+  //Status Update ToDo 
+  exports.StatusUpdateToDo=(req, res)=>{
+      
+      let ToDoStatus = req.body["ToDoStatus"]
+      let _id = req.body["_id"]
+  
+      let ToDoUpdateDate = Date.now();
+  
+      let PostBody = {
+          ToDoStatus:ToDoStatus,
+          ToDoUpdateDate: ToDoUpdateDate
+      }
+      
+      ToDoListModel.updateOne({_id:_id}, {$set:PostBody}, {upsert:true}, (error, data)=>{
+          if(error){
+              res.status(400).json({status:"Status Update ToDo Fail", data:error})
+          }
+          else{
+              res.status(200).json({status:"Status Update ToDo success, see profile data", data:data})
+          }
+      })
+  
+  
+  }
+  
+  
+  
+  
+  //Remove ToDo 
+  exports.RemoveToDo=(req, res)=>{
+      
+      let _id = req.body["_id"]
+      
+      ToDoListModel.remove({_id:_id}, (error, data)=>{
+          if(error){
+              res.status(400).json({status:"Remove or Delete ToDo Fail", data:error})
+          }
+          else{
+              res.status(200).json({status:"Remove or Delete ToDo success, see profile data", data:data})
+          }
+      })
+  
+  
+  }
+  
+  
+  
+  
+  
+  //Select ToDo By Status
+  exports.SelectToDoByStatus=(req, res)=>{
+      
+      
+      let UserName = req.headers['UserName']
+  
+      let ToDoStatus = req.body['ToDoStatus']
+  
+      ToDoListModel.find({UserName:UserName, ToDoStatus:ToDoStatus},function(error, Data){
+          if(error){
+              res.status(400).json({status:"Select ToDo Status Fail, an sure UserName", data:error})
+          }
+          else{
+              res.status(200).json({status:"Select ToDo Status success, see profile data", data:Data})
+          }
+      })
+  
+  }
+  
+  
+  
+  
+  
+  //Filter By Date ToDo
+  exports.FilterByCreateDateToDo=(req, res)=>{
+  
+  
+      let UserName = req.headers['UserName']
+  
+  
+      let FromDateToDo = req.body['FromDateToDo']
+      let ToDaTeToDo = req.body['ToDaTeToDo']
+  
+      //কন্ডিশনার দিয়ে কোন তারিখ থেকে কোন তারিখে টুডু তৈরি করা হয়েছে সেগুলো ছলে আসবে
+      ToDoListModel.find({UserName:UserName, ToDoCreateDate:{$gte:new Date(FromDateToDo), $lte:new Date(ToDaTeToDo)}},function(error, Data){
+          if(error){
+              res.status(400).json({status:"Select ToDo Status Fail, an sure UserName", data:error})
+          }
+          else{
+              res.status(200).json({status:"Select ToDo Status success, see profile data", data:Data})
+          }
+      })
+  
+  }
+</code>
+                        </pre>
+                      </div>
                       
 
 
@@ -217,7 +489,47 @@
                   </div>
                   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      <p>প্রোপাইল তৈরি করার সময় টোকেন ক্রিয়েট করা হয়, মিডেলওয়্যার ফাইলে টোকেন টিকে ভ্যারিফাই করা হয়, উপরের কোড গুলোতে মিডেলওয়্যার তৈরি করা হয়েছে। <br>
+                      <b>এই ফাইলে টোকেন টিকে ভ্যারিফাই করে বডিতে UserName নামে স্টোর করা হয়েছে। </b> </p>
+                      <hr>
+                      <p>টোকেন তৈরি করার কোড</p>
+                      <img src="./Token_Create.png" alt="">
+                      <hr>
+                      <p>টোকেন ভ্যারিফাই করার কোড, এখানে টোকেন ভ্যারিফাই করা হেডারে UserNmae নামে স্টোর করা হয়েছে।</p>
+                      <img src="./Token_Verify.png" alt="">
+                      
+                      <p>কোড</p>
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const Jwt = require("jsonwebtoken");
+
+  module.exports=(req, res, next)=>{
+  
+      let Token = req.headers["token-key"]
+  
+      Jwt.verify(Token, "123456789", (err, decode)=>{ //১২৩৪৫৬৭৮৯ হচ্ছে সিক্রেট কি, টোকেন যদি ঠিক থাকে তাহলে ডিকোড করে দিবে।
+          
+          if(err){
+              res.status(401).json({status:"unauthorize, jwt auth token fail, middlewae fail", status_t:"decode fail"})
+          }
+          else{
+              // তৈরি করা টোকেন ভেঙ্গে সেখান থেকে ইউজার নেম কে একটা ভ্যারিয়েবলে স্টোর করা হয়েছে
+              let UserName = decode.data[0].UserName;
+              req.headers.UserName = UserName; 
+              // get UserName ইউজার নেম কে ইনকোড করে বডিতে এড করা হয়েছে
+  
+              next();
+          }
+      })
+  
+  }
+</code>
+                        </pre>
+                      </div>
+
+
+
                     </div>
                   </div>
                 </div>
@@ -238,9 +550,8 @@
                       <hr>
                       <img src="./DataModel.png" alt="">
                       <hr>
-                      <p>কোড</p>
+                      <p>Profile Model কোড</p>
                       <hr>
-
                       <div class="File_Code" id="code_copy">
                         <pre>
 <code>
@@ -266,7 +577,35 @@
   module.exports = ProfileModel;
 </code>
                         </pre>
-                        </div>
+                      </div>
+                 
+                      <p>ToDo Model কোড</p>
+                      <div class="File_Code" id="code_copy">
+                        <pre>
+<code>
+  const Mongose = require("mongoose");
+
+  const DataSchema =  Mongose.Schema(
+      {
+          UserName:{type:String},
+          ToDoSubject:{type:String},
+          ToDoDescription:{type:String},
+          ToDoStatus:{type:String, default:"New"},
+          ToDoCreateDate:{type:Date, default:Date.now()},
+          ToDoUpdateDate:{type:Date, default:Date.now()}
+  
+      },{
+          versionKey:false
+      }
+  );
+  
+  const ToDoListModel =  Mongose.model("ToDoList", DataSchema);
+  
+  
+  module.exports = ToDoListModel;
+</code>
+                        </pre>
+                      </div>
 
 
 
@@ -295,15 +634,60 @@
                       <div class="File_Code" id="code_copy">
                         <pre>
 <code>
-  const ProfileController = require("../Controller/ProfileController.js")
-
+  // Profile Controller 
+  const ProfileController = require("../Controller/ProfileController.js");
+  
+  
+  // ToDo List Controller 
+  const ToDoListController = require("../Controller/ToDoListController.js");
+  
+  // Auth Verify Middleware 
+  const AuthVerifyMiddleware = require("../Middleware/AuthVerifyMiddleware.js");
+  
+  
+  
   const Express = require("express");
   const Router =  Express.Router()
   
-  
+  // Profile Create Api 
   Router.post("/ProfileCreate", ProfileController.CreateProfile)
   
+  // User Login Api 
+  Router.post("/UserLogin", ProfileController.UserLogin)
   
+  // Select Profile 
+  Router.get("/SelectProfile",AuthVerifyMiddleware, ProfileController.SelectProfile)
+  
+  // Update Profile
+  Router.post("/UpdateProfile",AuthVerifyMiddleware, ProfileController.UpdateProfile)
+  
+  
+  
+  
+  
+  // ToDo List Create 
+  Router.post("/CreateToDo",AuthVerifyMiddleware, ToDoListController.ToDoListModel)
+  
+  // Select ToDo 
+  Router.get("/SelectToDo",AuthVerifyMiddleware, ToDoListController.SelectToDo)
+  
+  // Update ToDo 
+  Router.post("/UpdateToDo",AuthVerifyMiddleware, ToDoListController.UpdateToDo)
+  
+  // Status Update ToDo
+  Router.post("/StatusUpdateToDo",AuthVerifyMiddleware, ToDoListController.StatusUpdateToDo)
+  
+  // Remove ToDo 
+  Router.post("/RemoveToDo",AuthVerifyMiddleware, ToDoListController.RemoveToDo)
+  
+  // Select ToDo By Status
+  Router.post("/SelectToDoByStatus",AuthVerifyMiddleware, ToDoListController.SelectToDoByStatus)
+  
+  // Filter By Create DateT oDo
+  Router.post("/FilterByCreateDateToDo",AuthVerifyMiddleware, ToDoListController.FilterByCreateDateToDo)
+  
+  // Documention Post Man this project 
+  // https://documenter.getpostman.com/view/22317575/2s935oKibC
   
   module.exports = Router;
 </code>
